@@ -1,0 +1,115 @@
+.body{font-family: 'PT Sans', sans-serif;}
+
+.masterContainer{text-align: left;
+margin-left:25px;
+margin-right:25px;}
+
+.row{margin-left:50px;}
+
+.dataContainer {margin-left:100px;
+margin-right:100px;}
+
+.jumbotron{background-color: #0E334A;
+text-align: center;
+font-size:60px;
+font-family: 'PT Sans', sans-serif;
+color:#F0C57E;
+border-color:#EBB651;
+border-style: solid;
+border-width: 10px;
+margin-bottom:10px}
+
+.statsBar{background-color: #DEDEDE;
+height:100px;
+margin-top:10px;
+border-color:#0E334A;
+border-width: 10px;
+border-style:solid;}
+
+
+.lineGraph{background-color: #DEDEDE;
+height: 300px;
+border-color:#0E334A;
+border-style: solid;
+border-left-width: 10px;
+border-bottom-width: 10px;
+border-top-width: 10px;}
+
+
+.questionsLiveFeed{background-color: #DEDEDE;
+height:100px;
+border-color:#0E334A;
+border-style:solid;
+border-right-width: 10px;
+border-bottom-width: 10px;
+border-left-width: 10px;}
+
+.rawDataFeed{background-color: #DEDEDE;
+height:200px;
+border-color:#0E334A;
+border-style:solid;
+border-width:10px;}
+
+.entry{width:150px;
+margin-top:10px;
+}
+
+.entryBar{margin-left:30px}
+
+.buttonRow{
+margin-top:50px;
+margin-left:100px;
+margin-right:100px;
+background-color: #DEDEDE;
+height:125px;
+border-color:#0E334A;
+border-style:solid;
+border-width: 5px;
+text-align: center;}
+  
+.questionRow{margin-top:25px;
+margin-left:100px;
+margin-right:100px;}
+
+.textEntry{height:100px;
+width:300px;
+margin-top:25px;
+margin-left:0px;
+margin-right:0px;
+background-color: #DEDEDE;
+height:125px;
+border-color:#0E334A;
+border-style:solid;
+border-width: 5px;
+text-align: center;}
+
+.submitQuestionButton{height:125px;
+width:125px;
+margin-top:25px;
+margin-left:0px;
+margin-right:0px;
+background-color: #DEDEDE;
+border-color:#0E334A;
+border-style:solid;
+border-width: 5px;
+text-align: center;}
+
+.btn1{background-color:#BD280E;}
+.btn2{background-color:#B94E12;}
+.btn3{background-color:#B9D012;}
+.btn4{background-color:#7EE712;}
+.btn5{background-color:#44910A;}
+/*
+  002E12 (Dark Green)
+  69967B (light green)
+  FFFFFF (white)
+  4A3B3A (brown)
+  969291 (grey)
+  font-family: 'Finger Paint', cursive;*/
+
+/*
+  dark blue 0E334A
+ light blue 99CEEB
+ medium blue 5CADD1
+ gold EBB651
+ light gold F0C57E*/
