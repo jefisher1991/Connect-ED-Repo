@@ -19,7 +19,7 @@ renderHtml();
 
 	getMean();
 	getMinMaxMedian();
-	getMode();
+	// getMode();
 
 		//Functions calculating Mean, median, mode, range
 
@@ -32,7 +32,7 @@ renderHtml();
 				numerator += data[i];
 			};
 
-			mean = numerator/denominator;
+			mean = (numerator/denominator).toFixed(2);
 			console.log(mean);
 		};
 
@@ -91,11 +91,11 @@ renderHtml();
 	};
 
 	function renderHtml(){
-		$(".median").html(median);
-		$(".mean").html(mean);
-		$(".min").html(min);
-		$(".max").html(max);
-		// $(".mode").html(mode);
+		$(".median").html("MEDIAN: " + median);
+		$(".mean").html("MEAN: "+ mean);
+		$(".min").html("MIN: " + min);
+		$(".max").html("MAX: " + max);
+		// $(".mode").html("MODE: " + mode));
 
 
 	};
