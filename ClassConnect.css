@@ -4,26 +4,24 @@
 margin-left:25px;
 margin-right:25px;}
 
-.row{margin-left:50px;}
+
 
 .dataContainer {margin-left:100px;
 margin-right:100px;}
 
 .jumbotron{background-color: #0E334A;
-text-align: center;
-font-size:60px;
-font-family: 'PT Sans', sans-serif;
 color:#F0C57E;
 border-color:#EBB651;
+text-align: center;
+font-size:60px;
 border-style: solid;
-border-width: 10px;
+border-width: 5px;
 margin-bottom:10px}
 
 .statsBar{background-color: #DEDEDE;
 height:100px;
-margin-top:10px;
 border-color:#0E334A;
-border-width: 10px;
+border-width: 5px;
 border-style:solid;}
 
 
@@ -31,35 +29,35 @@ border-style:solid;}
 height: 300px;
 border-color:#0E334A;
 border-style: solid;
-border-left-width: 10px;
-border-bottom-width: 10px;
-border-top-width: 10px;}
+border-width:5px;
+border-bottom-width: 0px;}
 
 
 .questionsLiveFeed{background-color: #DEDEDE;
 height:100px;
 border-color:#0E334A;
 border-style:solid;
-border-right-width: 10px;
-border-bottom-width: 10px;
-border-left-width: 10px;}
+border-width: 0px;
+border-right-width: 5px;}
 
 .rawDataFeed{background-color: #DEDEDE;
 height:200px;
 border-color:#0E334A;
 border-style:solid;
-border-width:10px;}
+border-width:5px;
+border-left-width:0px;}
+
+.buttonWrapper{margin-left:100px;
+margin-right: 100px;}
 
 .entry{width:150px;
 margin-top:10px;
 }
 
-.entryBar{margin-left:30px}
-
 .buttonRow{
 margin-top:50px;
-margin-left:100px;
-margin-right:100px;
+margin-left:auto;
+margin-right:auto;
 background-color: #DEDEDE;
 height:125px;
 border-color:#0E334A;
@@ -71,11 +69,10 @@ text-align: center;}
 margin-left:100px;
 margin-right:100px;}
 
-.textEntry{height:100px;
+.textEntry{
 width:300px;
+margin:0px;
 margin-top:25px;
-margin-left:0px;
-margin-right:0px;
 background-color: #DEDEDE;
 height:125px;
 border-color:#0E334A;
@@ -85,9 +82,8 @@ text-align: center;}
 
 .submitQuestionButton{height:125px;
 width:125px;
+margin: 0px;
 margin-top:25px;
-margin-left:0px;
-margin-right:0px;
 background-color: #DEDEDE;
 border-color:#0E334A;
 border-style:solid;
@@ -99,6 +95,13 @@ text-align: center;}
 .btn3{background-color:#B9D012;}
 .btn4{background-color:#7EE712;}
 .btn5{background-color:#44910A;}
+
+.statsBox{border-color:#0E334A;
+	
+border-style:solid;
+border-width: 5px;
+margin:20px;}
+
 /*
   002E12 (Dark Green)
   69967B (light green)
