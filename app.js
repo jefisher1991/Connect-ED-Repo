@@ -41,7 +41,7 @@ $(document).on("click", ".entry", function(event){
 $(document).on("click", ".submitQuestionButton", function(){
     event.preventDefault();
     
-    var question = $(".textEntry").text();
+    var question = $(".textEntry").val();
 
     reference.ref().push({
         question: question
@@ -58,8 +58,10 @@ reference.ref().on("value", function(snapshot) {
 	for(var i = 0; i < keys.length; i++){
 		var itemID = keys[i]; //Gives randomized ID key
 		var itemPathOuter = "Object.keys(snapshot.val()[" + itemID + "])";
-		var itemPathRating = itemPathOuter.comprehension;
-		var itemPathTime = itemPathOuter.time;
+		console.log(itemPathOuter);
+		var itemPathRating = itemPathOuter + ".comprehension";
+		console.log(itemPathRating);
+		var itemPathTime = itemPathOuter + ".time";
 
 		arrayRatings.push(itemPathRating);
 		arrayTimeStamps.push(itemPathTime);
