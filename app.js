@@ -9,33 +9,65 @@ $(document).ready(function(){
   };
 
   firebase.initializeApp(config);	
+
 //Variables
  var rating;
  var time;
+ var arrayRatings;
+ var arrayTimeStamp;
 
  var reference = firebase.database();
 
 //Event listeners
+
+//Listening for ratings of understanding
 	
 $(document).on("click", ".entry", function(event){
 	event.preventDefault();
 
 	rating = $(this).attr("value");
-	time = "9999-12-31 23:59:59";
-	console.log(rating);
+	timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+	console.log(timestamp);
 	
  //Pushing rating data to the database
 	reference.ref().push({
-		understanding: rating,
-		timestamp: time
+		comprehension: rating,
+		time: timestamp
 	});
+});
+
+//Listening for Questions
+
+$(document).on("click", ".submitQuestionButton", function(){
+    event.preventDefault();
+    
+    var question = $(".textEntry").text();
+
+    reference.ref().push({
+        question: question
+    });
 });
 
 //Retrieving ratings and timestamps from Firebase
 reference.ref().on("value", function(snapshot) {
+	keys = Object.keys(snapshot.val());
 
-      // Log everything that's coming out of snapshot
-      console.log(snapshot.val());
+	console.log(keys);
+
+	//For-loop starts 
+	for(var i = 0; i < keys.length; i++){
+		var itemID = keys[i]; //Gives randomized ID key
+		var itemPathOuter = "Object.keys(snapshot.val()[" + itemID + "])";
+		var itemPathRating = itemPathOuter.comprehension;
+		var itemPathTime = itemPathOuter.time;
+
+		arrayRatings.push(itemPathRating);
+		arrayTimeStamps.push(itemPathTime);
+	};
+
+	console.log(arrayRatings);
+	console.log(arrayTimeStamps);
+      
 
     // Handle the errors
     }, function(errorObject) {
