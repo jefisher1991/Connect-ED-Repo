@@ -17,7 +17,7 @@ $(document).ready(function(){
 
 //Event listeners
 	
-$(document).on("click", ".submit-button", function(event){
+$(document).on("click", ".entry", function(event){
 	event.preventDefault();
 
 	//Initial Variables
