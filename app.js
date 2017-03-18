@@ -1,11 +1,48 @@
 $(document).ready(function(){
-//Initial Variables for Stats
+ // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCEHReOrQaquelLRyTt--5LD2OS-9S3HMs",
+    authDomain: "connected-b7cf5.firebaseapp.com",
+    databaseURL: "https://connected-b7cf5.firebaseio.com",
+    storageBucket: "connected-b7cf5.appspot.com",
+    messagingSenderId: "359508292918"
+  };
 
-var mean;
-var median;
-var mode;
-var min;
-var max;
+  firebase.initializeApp(config);	
+//Variables
+ var rating;
+ var time;
+
+ var reference = firebase.database();
+
+//Event listeners
+	
+$(document).on("click", ".submit-button", function(event){
+	event.preventDefault();
+
+	//Initial Variables
+
+	 rating = $(".entry").attr("value");
+	 
+
+	
+ //Pushing employee data to the database
+	reference.ref().push({
+		understanding: rating
+	});
+
+
+});
+
+
+//Initial Variables for Stats
+	var data;
+	var mean;
+	var median;
+	var mode;
+	var min;
+	var max;
+
 
 runStats();
 renderHtml();
@@ -19,7 +56,7 @@ renderHtml();
 
 	getMean();
 	getMinMaxMedian();
-	// getMode();
+	getMode();
 
 		//Functions calculating Mean, median, mode, range
 
@@ -83,9 +120,20 @@ renderHtml();
 
 		};
 
-		// function getMode(){
+		function getMode(){
+			var objMode = {
+				number: [1, 2, 3, 4, 5],
+				count: []
+			};
 
-		// };
+			for (var i = 0; i < data.length; i++){
+				for (var i = 0; i < objMode.number.length; i++){
+					if (objMode.number[i] === data[i]){
+						count[i] = 
+					};
+				};
+			};
+		};
 
 
 	};
