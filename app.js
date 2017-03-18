@@ -41,11 +41,13 @@ $(document).on("click", ".entry", function(event){
 $(document).on("click", ".submitQuestionButton", function(){
     event.preventDefault();
     
-    var question = $(".textEntry").text();
+    var question = $(".textEntry").val();
 
     reference.ref().push({
         question: question
     });
+
+
 });
 
 //Retrieving ratings and timestamps from Firebase
