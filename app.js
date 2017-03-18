@@ -46,6 +46,8 @@ $(document).on("click", ".submitQuestionButton", function(){
     reference.ref().push({
         question: question
     });
+
+
 });
 
 //Retrieving ratings and timestamps from Firebase
