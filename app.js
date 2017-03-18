@@ -20,13 +20,12 @@ $(document).ready(function(){
 $(document).on("click", ".entry", function(event){
 	event.preventDefault();
 
-	//Initial Variables
-
-	 rating = $(".entry").attr("value");
+	rating = $(".entry").attr("value");
+	console.log(rating);
 	 
 
 	
- //Pushing employee data to the database
+ //Pushing rating data to the database
 	reference.ref().push({
 		understanding: rating
 	});
@@ -56,7 +55,7 @@ renderHtml();
 
 	getMean();
 	getMinMaxMedian();
-	getMode();
+	// getMode();
 
 		//Functions calculating Mean, median, mode, range
 
@@ -120,20 +119,20 @@ renderHtml();
 
 		};
 
-		function getMode(){
-			var objMode = {
-				number: [1, 2, 3, 4, 5],
-				count: []
-			};
+		// function getMode(){
+		// 	var objMode = {
+		// 		number: [1, 2, 3, 4, 5],
+		// 		count: []
+		// 	};
 
-			for (var i = 0; i < data.length; i++){
-				for (var i = 0; i < objMode.number.length; i++){
-					if (objMode.number[i] === data[i]){
-						count[i] = 
-					};
-				};
-			};
-		};
+		// 	for (var i = 0; i < data.length; i++){
+		// 		for (var i = 0; i < objMode.number.length; i++){
+		// 			if (objMode.number[i] === data[i]){
+		// 				count[i] = 
+		// 			};
+		// 		};
+		// 	};
+		// };
 
 
 	};
