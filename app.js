@@ -20,18 +20,27 @@ $(document).ready(function(){
 $(document).on("click", ".entry", function(event){
 	event.preventDefault();
 
-	rating = $(".entry").attr("value");
+	rating = $(this).attr("value");
+	time = "9999-12-31 23:59:59";
 	console.log(rating);
-	 
-
 	
  //Pushing rating data to the database
 	reference.ref().push({
-		understanding: rating
+		understanding: rating,
+		timestamp: time
 	});
-
-
 });
+
+//Retrieving ratings and timestamps from Firebase
+reference.ref().on("value", function(snapshot) {
+
+      // Log everything that's coming out of snapshot
+      console.log(snapshot.val());
+
+    // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
 
 
 //Initial Variables for Stats
@@ -104,7 +113,6 @@ renderHtml();
 				} else {
 					var half = data.length / 2;
 					console.log("half = " + half);
-					// median = Math.ceil(data[half]);
 					median = data[Math.ceil(half)];
 
 				};
