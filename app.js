@@ -10,94 +10,84 @@ $(document).ready(function(){
   };
 
   firebase.initializeApp(config);	
+  var reference = firebase.database();
 
 //Variables
- var arrayRatings = [];
- var arrayTimeStamp = [];
 
- var reference = firebase.database();
+	//XY Coordinates for Ratings and Corresponding Timestamps
+	 var arrayRatings = [];
+	 var arrayTimeStamp = [];
+
+	 //XY Coordinates for Ratings and Corresponding Timestamps
+	 var arrayQuestions = [];
+	 var arrayQuesTimeStamp = [];
+
 
 //Event listeners
 
-//Listening for ratings of understanding
-	
-$(document).on("click", ".entry", function(event){
-	event.preventDefault();
+	//Listening for ratings of understanding
+		
+	$(document).on("click", ".entry", function(event){
+		event.preventDefault();
 
-	var rating = $(this).attr("value");
-	var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
-	console.log(timestamp);
-	
- //Pushing rating data to the database
-	reference.ref().push({
-		comprehension: rating,
-		time: timestamp
+		var rating = $(this).attr("value");
+		var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+		
+	 //Pushing rating data to the database
+		reference.ref().push({
+			comprehension: rating,
+			time: timestamp
+		});
 	});
-});
 
-//Listening for Questions
+	//Listening for Questions
 
-$(document).on("click", ".submitQuestionButton", function(){
-    event.preventDefault();
-    
-    var question = $(".textEntry").val();
-    var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
-	console.log(timestamp);
+	$(document).on("click", ".submitQuestionButton", function(){
+	    event.preventDefault();
+	    
+	    var question = $(".textEntry").val();
+	    var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
 
-    reference.ref().push({
-        question: question,
-        time: timestamp
-    });
+	    reference.ref().push({
+	        question: question,
+	        time: timestamp
+	    });
+	});
 
-
-});
-
-//Retrieving ratings and timestamps from Firebase
+//Retrieving ratings and/or questions with corresponding timestamps from Firebase
 reference.ref().on("value", function(snapshot) {
-	keys = Object.keys(snapshot.val());
-	console.log(keys);
 
 	snapshot.forEach(function(data) {
 		var retrieveRating = data.val().comprehension;
 		var retrieveTimestamp = data.val().time;
-    	console.log(retrieveRating);
+		var retrieveQuestion = data.val().question;
 
 	    	if (data.val().comprehension === undefined){
-	    		return;
+	    		if (data.val().question === undefined){
+	    			return;
+	    		} else {
+	    			arrayQuestions.push(retrieveQuestion);
+	    			arrayQuesTimeStamp.push(retrieveTimestamp);
+	    		};
 	    	} else {
 	    		arrayRatings.push(retrieveRating);
-	    		arrayTimeStamp.push(retrieveTimeStamp);
+	    		arrayTimeStamp.push(retrieveTimestamp);
 	    	};
-
-    	console.log(arrayRatings);
   		});
-  	});
 
-	// //For-loop starts 
-	// for(var i = 0; i < keys.length; i++){
+		//Checking for full array
+	    	console.log(arrayRatings);
+    		console.log(arrayTimeStamp);
 
-	// 	console.log()
+    		console.log(arrayQuestions);
+    		console.log(arrayQuesTimeStamp);
 
-	// 	var itemID = keys[i]; //Gives randomized ID key
-	// 	var itemPath = "Object.keys(snapshot.val()[" + itemID + "]";
-	// 	console.log(Object.keys(snapshot.val()));
-	// 	console.log(itemPath);
-	// 	var itemPathRating = itemPath + ".comprehension)";
-	// 	console.log(itemPathRating);
-	// 	var itemPathTime = itemPath + ".time)";
+     // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
 
-	// 	// arrayRatings.push(parseInt(itemPathRating));
-	// 	// arrayTimeStamp.push(itemPathTime);
-	// };
-
-	// // console.log(arrayRatings);
-	// // console.log(arrayTimeStamp);
-      
-
- //    // Handle the errors
- //    }, function(errorObject) {
- //      console.log("Errors handled: " + errorObject.code);
- //    });
+    	
 
 
 //Initial Variables for Stats
@@ -121,9 +111,8 @@ renderHtml();
 
 	getMean();
 	getMinMaxMedian();
-	// getMode();
 
-		//Functions calculating Mean, median, mode, range
+		//Functions calculating Mean, median, range
 
 		function getMean(){
 
@@ -135,15 +124,12 @@ renderHtml();
 			};
 
 			mean = (numerator/denominator).toFixed(2);
-			console.log(mean);
 		};
 
 		function getMinMaxMedian(){
-			console.log("pre-array:" + data);
-
-				data.sort(function(a,b){
-	    			return a - b
-				});
+			data.sort(function(a,b){
+    			return a - b
+			});
 
 			min = data[0];
 			max = data[(data.length - 1)];
@@ -158,48 +144,18 @@ renderHtml();
 					even = true;
 				};
 		
-
 				if (even === true){
 					var half = (data.length / 2);
-					console.log("half = " + half);
 					var halfMinus = (half - 1);
-					console.log("halfMinus = " + halfMinus);
 					var targets = data[half] + data[halfMinus];
-					console.log("targets = " + targets);
 					median = targets / 2;
+
 				} else {
 					var half = data.length / 2;
-					console.log("half = " + half);
 					median = data[Math.ceil(half)];
-
 				};
-
-				console.log("median:" + median);
-
 			};
-			
-			console.log("post-array"+ data);
-			console.log("min:" + min);
-			console.log("max:" + max);
-
 		};
-
-		// function getMode(){
-		// 	var objMode = {
-		// 		number: [1, 2, 3, 4, 5],
-		// 		count: []
-		// 	};
-
-		// 	for (var i = 0; i < data.length; i++){
-		// 		for (var i = 0; i < objMode.number.length; i++){
-		// 			if (objMode.number[i] === data[i]){
-		// 				count[i] = 
-		// 			};
-		// 		};
-		// 	};
-		// };
-
-
 	};
 
 	function renderHtml(){
@@ -207,9 +163,6 @@ renderHtml();
 		$(".mean").html("MEAN: "+ mean);
 		$(".min").html("MIN: " + min);
 		$(".max").html("MAX: " + max);
-		// $(".mode").html("MODE: " + mode));
-
-
 	};
 
 });
