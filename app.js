@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
  // Initialize Firebase
   var config = {
     apiKey: "AIzaSyCEHReOrQaquelLRyTt--5LD2OS-9S3HMs",
@@ -13,8 +14,8 @@ $(document).ready(function(){
 //Variables
  var rating;
  var time;
- var arrayRatings;
- var arrayTimeStamp;
+ var arrayRatings = [];
+ var arrayTimeStamp = [];
 
  var reference = firebase.database();
 
@@ -53,30 +54,49 @@ $(document).on("click", ".submitQuestionButton", function(){
 //Retrieving ratings and timestamps from Firebase
 reference.ref().on("value", function(snapshot) {
 	keys = Object.keys(snapshot.val());
-
 	console.log(keys);
 
-	//For-loop starts 
-	for(var i = 0; i < keys.length; i++){
-		var itemID = keys[i]; //Gives randomized ID key
-		var itemPathOuter = "Object.keys(snapshot.val()[" + itemID + "])";
-		console.log(itemPathOuter);
-		var itemPathRating = itemPathOuter + ".comprehension";
-		console.log(itemPathRating);
-		var itemPathTime = itemPathOuter + ".time";
+	snapshot.forEach(function(data) {
+		var retrieveRating = data.val().comprehension;
+		var retrieveTimestamp = data.val().time;
+    	console.log(retrieveRating);
 
-		arrayRatings.push(itemPathRating);
-		arrayTimeStamps.push(itemPathTime);
-	};
+	    	if (data.val().comprehension === undefined){
+	    		return;
+	    	} else {
+	    		arrayRatings.push(retrieveRating);
+	    		arrayTimeStamp.push(retrieveTimeStamp);
+	    	};
 
-	console.log(arrayRatings);
-	console.log(arrayTimeStamps);
+    	console.log(arrayRatings);
+  		});
+  	});
+
+	// //For-loop starts 
+	// for(var i = 0; i < keys.length; i++){
+
+	// 	console.log()
+
+	// 	var itemID = keys[i]; //Gives randomized ID key
+	// 	var itemPath = "Object.keys(snapshot.val()[" + itemID + "]";
+	// 	console.log(Object.keys(snapshot.val()));
+	// 	console.log(itemPath);
+	// 	var itemPathRating = itemPath + ".comprehension)";
+	// 	console.log(itemPathRating);
+	// 	var itemPathTime = itemPath + ".time)";
+
+	// 	// arrayRatings.push(parseInt(itemPathRating));
+	// 	// arrayTimeStamp.push(itemPathTime);
+	// };
+
+	// // console.log(arrayRatings);
+	// // console.log(arrayTimeStamp);
       
 
-    // Handle the errors
-    }, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-    });
+ //    // Handle the errors
+ //    }, function(errorObject) {
+ //      console.log("Errors handled: " + errorObject.code);
+ //    });
 
 
 //Initial Variables for Stats
