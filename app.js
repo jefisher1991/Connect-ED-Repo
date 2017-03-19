@@ -12,8 +12,6 @@ $(document).ready(function(){
   firebase.initializeApp(config);	
 
 //Variables
- var rating;
- var time;
  var arrayRatings = [];
  var arrayTimeStamp = [];
 
@@ -26,8 +24,8 @@ $(document).ready(function(){
 $(document).on("click", ".entry", function(event){
 	event.preventDefault();
 
-	rating = $(this).attr("value");
-	timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+	var rating = $(this).attr("value");
+	var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
 	console.log(timestamp);
 	
  //Pushing rating data to the database
@@ -43,9 +41,12 @@ $(document).on("click", ".submitQuestionButton", function(){
     event.preventDefault();
     
     var question = $(".textEntry").val();
+    var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+	console.log(timestamp);
 
     reference.ref().push({
-        question: question
+        question: question,
+        time: timestamp
     });
 
 
