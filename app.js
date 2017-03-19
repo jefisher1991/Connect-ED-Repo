@@ -70,11 +70,15 @@ reference.ref().on("value", function(snapshot) {
 	    			arrayQuesTimeStamp.push(retrieveTimestamp);
 	    		};
 	    	} else {
-	    		arrayRatings.push(retrieveRating);
+	    		arrayRatings.push(parseInt(retrieveRating));
 	    		arrayTimeStamp.push(retrieveTimestamp);
 	    	};
   		});
 
+		//Stats Functions
+
+		runStats();
+		renderHtml();
 		//Checking for full array
 	    	console.log(arrayRatings);
     		console.log(arrayTimeStamp);
@@ -91,7 +95,7 @@ reference.ref().on("value", function(snapshot) {
 
 
 //Initial Variables for Stats
-	var data;
+	var data = arrayRatings;
 	var mean;
 	var median;
 	var mode;
@@ -99,15 +103,8 @@ reference.ref().on("value", function(snapshot) {
 	var max;
 
 
-runStats();
-renderHtml();
-
-	//Stats Output; called when database value changes, or on a timed interval
+//Stats Output; called when database value changes, or on a timed interval
 	function runStats(){
-
-
-	//Grab data, global scope?
-	data = [1, 5, 3, 4, 2, 4, 5];
 
 	getMean();
 	getMinMaxMedian();
@@ -118,12 +115,16 @@ renderHtml();
 
 			var denominator = data.length;
 			var numerator = 0;
+			console.log(denominator);
 
 			for (var i = 0; i < data.length; i++){
 				numerator += data[i];
+				console.log(numerator);
 			};
 
 			mean = (numerator/denominator).toFixed(2);
+			console.log(mean);
+
 		};
 
 		function getMinMaxMedian(){
