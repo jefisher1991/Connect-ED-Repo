@@ -99,14 +99,15 @@ reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(s
 		console.log(snapshot.val());
 		var score = snapshot.val().comprehension;
 		var time = snapshot.val().time;
-		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + time);
-	}
+		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + time)
+	};
 });
 
-reference.ref().orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(snapshot) {
+	event.preventDefault();
 	if (snapshot.hasChild("question")) {
-		$(".questionsLiveFeed").append("<br>" + snapshot.val().question);
-	}
+		$(".questionsLiveFeed").append("<br>" + snapshot.val().question)
+	};
 });
 
 
