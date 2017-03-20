@@ -1,118 +1,140 @@
-.body{font-family: 'PT Sans', sans-serif;}
-
-.masterContainer{text-align: left;
-margin-left:25px;
-margin-right:25px;}
+.body{font-family: 'PT Sans', sans-serif;
+background-color: #A9A9A9;}
 
 
+.masterContainer{text-align: center;
+	background-color:#696969;
+	height:auto;
+	width:auto;}
 
-.dataContainer {margin-left:100px;
-margin-right:100px;}
 
-.jumbotron{background-color: #290333;
-color:#F0C57E;
-border-color:#EBB651;
+.jumbotron{background-color: #A9A9A9;
+color:#F8CF5D;
+border-color:#808080;
+font-size:75px;
+border-style: solid;
+border-width: 5px;
 text-align: center;
-font-size:60px;
-border-style: solid;
-border-width: 5px;
-margin-bottom:10px}
+text-shadow: #000000 0px 0px 20px;
+height:125px;
+margin:0px;
+padding:0px;
+margin-bottom:25px;
+padding-bottom: 25px;}
 
-.statsBar{background-color: #DEDEDE;
-height:100px;
-border-color:#0E334A;
-border-width: 5px;
-border-style:solid;}
-
-
-.lineGraph{background-color: #DEDEDE;
-height: 300px;
-border-color:#0E334A;
-border-style: solid;
-border-width:5px;
-border-bottom-width: 0px;}
-
-
-.questionsLiveFeed{background-color: #DEDEDE;
-height:100px;
-border-color:#0E334A;
-border-style:solid;
-border-width: 0px;
-border-right-width: 5px;}
-
-.rawDataFeed{background-color: #DEDEDE;
-height:200px;
-border-color:#0E334A;
-border-style:solid;
-border-width:5px;
-border-left-width:0px;}
-
-.buttonWrapper{margin-left:100px;
-margin-right: 100px;}
-
-.entry{width:150px;
-margin-top:10px;
+.statsBox{outline-width: 3px; 
+outline-style: solid;
+outline-color: #696969;
+margin:20px;
+margin-left: auto;
+margin-right: auto;
+display:inline-block;
+font-weight: bold; 
+font-size: 20px;
 }
 
-.buttonRow{
+.statsBar{background-color: #A9A9A9;
+height:150px;
+width:100%;
+border-width: 3px; 
+border-style: solid;
+border-color: #BD280E;
+text-align: center;
+display: inline-block;
+}
+
+.classStatsHeader{color:#BD280E;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+.lineGraph{background-color: #A9A9A9;
+height: 300px;
+border-width: 3px; 
+border-style: solid;
+border-color: #B94E12;}
+
+.questionsLiveFeed{background-color: #A9A9A9;
+height:100px;
+border-width: 3px; 
+border-style: solid;
+border-color: #F8CF5D;
+font-weight: bold;}
+
+.questionsLiveFeedHeader{color:#F8CF5D;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+.rawDataFeed{background-color: #A9A9A9;
+height:200px;
+border-width: 3px; 
+border-style: solid;
+border-color: #9AA81A;
+font-weight: bold;}
+
+.rawDataFeedHeader{color:#9AA81A;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+
+
+.entry{width:225px;
+	height:60px;
+	float:left;
+	margin-left: 0px;
+	margin-right: 0px;
+	border-color: #000000;
+	clear:both;
+	font-size:14px;
+  	white-space: normal;}
+
+
+.buttonRow{text-align:center;
+margin:0px; 
 margin-top:50px;
+display: inline-block;}
+  
+.questionRow{margin-top:50px;
 margin-left:auto;
 margin-right:auto;
-background-color: #DEDEDE;
-height:125px;
-border-color:#0E334A;
-border-style:solid;
-border-width: 5px;
-text-align: center;}
-  
-.questionRow{margin-top:25px;
-margin-left:100px;
-margin-right:100px;}
+margin-top:0px;
+background-color: #696969;}
 
-.textEntry{
-width:300px;
-margin:0px;
-margin-top:25px;
-background-color: #DEDEDE;
-height:125px;
-border-color:#0E334A;
-border-style:solid;
-border-width: 5px;
-text-align: center;}
-
-.submitQuestionButton{height:125px;
+.submitQuestionButton{
+background-color-color:#808080;
+height:100px;
 width:125px;
 margin: 0px;
-margin-top:25px;
-background-color: #DEDEDE;
-border-color:#0E334A;
+margin-top:50px;
+border-color:#F8CF5D;
 border-style:solid;
 border-width: 5px;
 text-align: center;}
 
-.btn1{background-color:#BD280E;}
-.btn2{background-color:#B94E12;}
-.btn3{background-color:#B9D012;}
-.btn4{background-color:#7EE712;}
-.btn5{background-color:#44910A;}
+.textEntry:focus{border-color:#44910A;}
 
-.statsBox{border-color:#0E334A;
-	
+.textEntry{
+background-color: #696969;
+margin:0px;
+margin-top:50px;
+margin-bottom: 100px;
+height:100px;
+border-color:#F8CF5D;
 border-style:solid;
 border-width: 5px;
-margin:20px;}
+text-align: center;}
+
+
+.btn1{background-color:#BD280E; clear:left;}
+.btn2{background-color:#B94E12; clear:right;}
+.btn3{background-color:#F8CF5D; clear:right;}
+.btn4{background-color:#9AA81A; clear:right;}
+.btn5{background-color:#44910A; clear:right;}
+
 
 /*
-  002E12 (Dark Green)
-  69967B (light green)
-  FFFFFF (white)
-  4A3B3A (brown)
-  969291 (grey)
-  font-family: 'Finger Paint', cursive;*/
-
-/*
-  dark blue 0E334A
- light blue 99CEEB
- medium blue 5CADD1
- gold EBB651
- light gold F0C57E*/
+ 	gainsboro	#DCDCDC	rgb(220,220,220)
+ 	lightgray / lightgrey	#D3D3D3	rgb(211,211,211)
+ 	silver	#C0C0C0	rgb(192,192,192)
+ 	darkgray / darkgrey	#A9A9A9	rgb(169,169,169)
+ 	gray / grey	#808080	rgb(128,128,128)
+ 	/*dimgray / dimgrey	#696969	rgb(105,105,105)*/

@@ -91,6 +91,25 @@ reference.ref().on("value", function(snapshot) {
       console.log("Errors handled: " + errorObject.code);
     });
 
+
+// listener for live data points
+
+reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(snapshot) {
+	if (snapshot.hasChild("comprehension") && snapshot.hasChild("time")) {
+		console.log(snapshot.val());
+		var score = snapshot.val().comprehension;
+		var time = snapshot.val().time;
+		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + time);
+	}
+});
+
+reference.ref().orderByChild("time").limitToLast(1).on("child_added", function(snapshot) {
+	if (snapshot.hasChild("question")) {
+		$(".questionsLiveFeed").append("<br>" + snapshot.val().question);
+	}
+});
+
+
     	
 
 
@@ -159,7 +178,10 @@ reference.ref().on("value", function(snapshot) {
 		};
 	};
 
+
+
 	function renderHtml(){
+
 		$(".median").html("MEDIAN: " + median);
 		$(".mean").html("MEAN: "+ mean);
 		$(".min").html("MIN: " + min);
