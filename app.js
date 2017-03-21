@@ -39,7 +39,7 @@ $(document).ready(function(){
 		reference.ref().push({
 			comprehension: rating,
 			date: dateStamp,
-      utc: utcTime
+      		utc: utcTime
 		});
 	});
 
@@ -55,7 +55,7 @@ $(document).ready(function(){
 	    reference.ref().push({
 	        question: question,
 	        date: dateStamp,
-          utc: utcTime
+          	utc: utcTime
 	    });
 	});
 
@@ -83,7 +83,7 @@ reference.ref().on("value", function(snapshot) {
 		//Stats Functions
 
 		runStats();
-		renderHtml();
+		
 		//Checking for full array
 	    	console.log(arrayRatings);
     		console.log(arrayTimeStamp);
@@ -102,90 +102,117 @@ reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(s
 	if (snapshot.hasChild("comprehension") && snapshot.hasChild("date")) {
 		var score = snapshot.val().comprehension;
 		var date = snapshot.val().date;
-		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + date);
-    console.log("comprehension: " + score + " time: " + date);
+		var utcTime = snapshot.val().utc;
+		var convertedTime= moment(utcTime).format('LT');
+		$(".rawDataFeed").prepend("<br> Comprehension: " + score + " || Time: " + convertedTime);
+    console.log("comprehension: " + score + " time: " + convertedTime + "date" + date);
 	}
 });
 
 reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(snapshot) {
+		var utcTime = snapshot.val().utc;
+		var convertedTime= moment(utcTime).format('LT');
 	if (snapshot.hasChild("question")) {
-		$(".questionsLiveFeed").append("<br>" + snapshot.val().question);
+		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
     console.log(snapshot.val().question);
 	}
 });
 
 //Initial Variables for Stats
-	var data = arrayRatings;
-	var mean;
-	var median;
-	var mode;
-	var min;
-	var max;
+    var data = [];
+    var mean;
+    var median;
+    var mode;
+    var min;
+    var max;
+
+//Timer for Refreshing Stats Bar
+function runStats(){
+    if (arrayRatings.length > 9){
+        var minIndex = arrayRatings.length - 9;
+        
+        for (var i = minIndex; i < arrayRatings.length; i++){
+            data.push(arrayRatings[i]);
+        };
+
+        setInterval(function(){
+            getNumbers();
+            renderHtml();
+        }, 1000*60);
+        
+
+    } else {
+        $(".median").html("MEDIAN: ");
+        $(".mean").html("MEAN: ");
+        $(".min").html("MIN: ");
+        $(".max").html("MAX: ");
+    };
+};
+    //Stats Output; called when database value changes, or on a timed interval
+        function getNumbers(){
+
+        getMean();
+        getMinMaxMedian();
+
+            //Functions calculating Mean, median, range
+
+            function getMean(){
+
+                var denominator = data.length;
+                var numerator = 0;
+                console.log(denominator);
+
+                for (var i = 0; i < data.length; i++){
+                    numerator += data[i];
+                    console.log(numerator);
+                    console.log("data i"+ data[i]);
+                };
+
+                mean = (numerator/denominator).toFixed(2);
+                console.log(mean);
+
+            };
+
+            function getMinMaxMedian(){
+                data.sort(function(a,b){
+                    return a - b
+                });
+
+                min = data[0];
+                max = data[(data.length - 1)];
+
+                getMedian();
+
+                function getMedian(){
+                    //Is the length of the array even or odd? Determines how median is calculated!
+                    var even = false;
+
+                    if(Number.isInteger(data.length / 2)){
+                        even = true;
+                    };
+            
+                    if (even === true){
+                        var half = (data.length / 2);
+                        var halfMinus = (half - 1);
+                        var targets = data[half] + data[halfMinus];
+                        median = targets / 2;
+
+                    } else {
+                        var half = data.length / 2;
+                        median = data[Math.ceil(half)];
+                    };
+                };
+            };
+        };
 
 
-//Stats Output; called when database value changes, or on a timed interval
-	function runStats(){
 
-	getMean();
-	getMinMaxMedian();
+        function renderHtml(){
 
-		//Functions calculating Mean, median, range
+            $(".median").html("MEDIAN: " + median);
+            $(".mean").html("MEAN: "+ mean);
+            $(".min").html("MIN: " + min);
+            $(".max").html("MAX: " + max);
+        };
 
-		function getMean(){
-
-			var denominator = data.length;
-			var numerator = 0;
-			console.log(denominator);
-
-			for (var i = 0; i < data.length; i++){
-				numerator += data[i];
-			};
-
-			mean = (numerator/denominator).toFixed(2);
-			console.log(mean);
-
-		};
-
-		function getMinMaxMedian(){
-			data.sort(function(a,b){
-    			return a - b
-			});
-
-			min = data[0];
-			max = data[(data.length - 1)];
-
-			getMedian();
-
-			function getMedian(){
-				//Is the length of the array even or odd? Determines how median is calculated!
-				var even = false;
-
-				if(Number.isInteger(data.length / 2)){
-					even = true;
-				};
-
-				if (even === true){
-					var half = (data.length / 2);
-					var halfMinus = (half - 1);
-					var targets = data[half] + data[halfMinus];
-					median = targets / 2;
-
-				} else {
-					var half = data.length / 2;
-					median = data[Math.ceil(half)];
-				};
-			};
-		};
-	};
-
-
-
-	function renderHtml(){
-
-		$(".median").html("MEDIAN: " + median);
-		$(".mean").html("MEAN: "+ mean);
-		$(".min").html("MIN: " + min);
-		$(".max").html("MAX: " + max);
-	};
-
-});
+    });

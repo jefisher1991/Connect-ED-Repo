@@ -58,18 +58,22 @@ height:100px;
 border-width: 3px; 
 border-style: solid;
 border-color: #F8CF5D;
-font-weight: bold;}
+font-weight: bold;
+overflow-y: scroll;}
 
 .questionsLiveFeedHeader{color:#F8CF5D;
 font-size: 30px; 
 text-shadow: #000000 0px 0px 2px;}
+
+.dataMiniBox{}
 
 .rawDataFeed{background-color: #A9A9A9;
 height:200px;
 border-width: 3px; 
 border-style: solid;
 border-color: #9AA81A;
-font-weight: bold;}
+font-weight: bold;
+overflow-y: scroll;}
 
 .rawDataFeedHeader{color:#9AA81A;
 font-size: 30px; 
