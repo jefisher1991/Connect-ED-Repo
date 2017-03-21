@@ -9,7 +9,7 @@ $(document).ready(function(){
     messagingSenderId: "359508292918"
   };
 
-  firebase.initializeApp(config);	
+  firebase.initializeApp(config);
   var reference = firebase.database();
 
 //Variables
@@ -26,17 +26,20 @@ $(document).ready(function(){
 //Event listeners
 
 	//Listening for ratings of understanding
-		
+
 	$(document).on("click", ".entry", function(event){
 		event.preventDefault();
+    //$(".rawDataFeed").html("");
 
 		var rating = $(this).attr("value");
-		var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
-		
+		var dateStamp = new Date().toLocaleDateString();
+    var utcTime = new Date().getTime();
+
 	 //Pushing rating data to the database
 		reference.ref().push({
 			comprehension: rating,
-			time: timestamp
+			date: dateStamp,
+      utc: utcTime
 		});
 	});
 
@@ -44,13 +47,15 @@ $(document).ready(function(){
 
 	$(document).on("click", ".submitQuestionButton", function(){
 	    event.preventDefault();
-	    
+
 	    var question = $(".textEntry").val();
-	    var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
+	    var dateStamp = new Date().toLocaleDateString();
+      var utcTime = new Date().getTime();
 
 	    reference.ref().push({
 	        question: question,
-	        time: timestamp
+	        date: dateStamp,
+          utc: utcTime
 	    });
 	});
 
@@ -91,28 +96,23 @@ reference.ref().on("value", function(snapshot) {
       console.log("Errors handled: " + errorObject.code);
     });
 
-
 // listener for live data points
 
-reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(snapshot) {
-	if (snapshot.hasChild("comprehension") && snapshot.hasChild("time")) {
-		console.log(snapshot.val());
+reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(snapshot) {
+	if (snapshot.hasChild("comprehension") && snapshot.hasChild("date")) {
 		var score = snapshot.val().comprehension;
-		var time = snapshot.val().time;
-		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + time)
-	};
+		var date = snapshot.val().date;
+		$(".rawDataFeed").append("<br> Comprehension: " + score + " || Time: " + date);
+    console.log("comprehension: " + score + " time: " + date);
+	}
 });
 
-reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(snapshot) {
-	event.preventDefault();
+reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(snapshot) {
 	if (snapshot.hasChild("question")) {
-		$(".questionsLiveFeed").append("<br>" + snapshot.val().question)
-	};
+		$(".questionsLiveFeed").append("<br>" + snapshot.val().question);
+    console.log(snapshot.val().question);
+	}
 });
-
-
-    	
-
 
 //Initial Variables for Stats
 	var data = arrayRatings;
@@ -139,7 +139,6 @@ reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(s
 
 			for (var i = 0; i < data.length; i++){
 				numerator += data[i];
-				console.log(numerator);
 			};
 
 			mean = (numerator/denominator).toFixed(2);
@@ -164,7 +163,7 @@ reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(s
 				if(Number.isInteger(data.length / 2)){
 					even = true;
 				};
-		
+
 				if (even === true){
 					var half = (data.length / 2);
 					var halfMinus = (half - 1);
