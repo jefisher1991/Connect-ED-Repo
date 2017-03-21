@@ -7,8 +7,8 @@
     <script src="https://www.gstatic.com/firebasejs/3.7.2/firebase.js"></script>
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <!-- D3 Library -->
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- Google Charts Library -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <!-- Native JS File -->
     <script type="text/javascript" src="app.js"></script>
     <!-- Bootstrap Library -->
@@ -29,7 +29,7 @@
             <!-- Large Row  -->
             <div class="row">
                 <!-- display of graph -->
-                <div class="col-md-8 lineGraph"> This is where the line graph will display, this is an average of the submissions from students
+                <div class="col-md-8 lineGraph" id="curve_chart" style="width: 900px; height: 500px"> This is where the line graph will display, this is an average of the submissions from students
                 </div>
                 <div class="col-md-4">
                     <div class="row rawDataFeed">

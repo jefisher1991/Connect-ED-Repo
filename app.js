@@ -12,6 +12,44 @@ $(document).ready(function(){
   firebase.initializeApp(config);	
   var reference = firebase.database();
 
+
+  	google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        
+      //   var jsonData = $.ajax({
+      //   	url:"https://console.firebase.google.com/project/connected-b7cf5/database/data",
+      //   	dataType: "json",
+      //   	async: true
+      //   }).done(function(response){
+      //   	console.log(jsonData)
+      //    }); 
+        
+
+        var data = new google.visualization.DataTable();
+        	data.addColumn("number", "Comprehension")
+        	data.addColumn("number", "Time")
+        	data.addRows([
+        		[6, 5],
+        		[7, 3],
+        		[8, 5]
+        		])
+  	
+        	
+        var options = {
+          title: 'Class Feelings',
+          curveType: 'function',
+          // legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options); 
+    
+
+  }       
+
 //Variables
 
 	//XY Coordinates for Ratings and Corresponding Timestamps
@@ -33,6 +71,7 @@ $(document).ready(function(){
 		var rating = $(this).attr("value");
 		var timestamp = new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
 		
+
 	 //Pushing rating data to the database
 		reference.ref().push({
 			comprehension: rating,
@@ -135,15 +174,15 @@ reference.ref().orderByChild("time").limitToLast(3).on("child_added", function(s
 
 			var denominator = data.length;
 			var numerator = 0;
-			console.log(denominator);
+			// console.log(denominator);
 
 			for (var i = 0; i < data.length; i++){
 				numerator += data[i];
-				console.log(numerator);
+				// console.log(numerator);
 			};
 
 			mean = (numerator/denominator).toFixed(2);
-			console.log(mean);
+			// console.log(mean);
 
 		};
 
