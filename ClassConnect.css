@@ -1,0 +1,140 @@
+.body{font-family: 'PT Sans', sans-serif;
+background-color: #A9A9A9;}
+
+
+.masterContainer{text-align: center;
+	background-color:#696969;
+	height:auto;
+	width:auto;}
+
+
+.jumbotron{background-color: #A9A9A9;
+color:#F8CF5D;
+border-color:#808080;
+font-size:75px;
+border-style: solid;
+border-width: 5px;
+text-align: center;
+text-shadow: #000000 0px 0px 20px;
+height:125px;
+margin:0px;
+padding:0px;
+margin-bottom:25px;
+padding-bottom: 25px;}
+
+.statsBox{outline-width: 3px; 
+outline-style: solid;
+outline-color: #696969;
+margin:20px;
+margin-left: auto;
+margin-right: auto;
+display:inline-block;
+font-weight: bold; 
+font-size: 20px;
+}
+
+.statsBar{background-color: #A9A9A9;
+height:150px;
+width:100%;
+border-width: 3px; 
+border-style: solid;
+border-color: #BD280E;
+text-align: center;
+display: inline-block;
+}
+
+.classStatsHeader{color:#BD280E;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+.lineGraph{background-color: #A9A9A9;
+height: 300px;
+border-width: 3px; 
+border-style: solid;
+border-color: #B94E12;}
+
+.questionsLiveFeed{background-color: #A9A9A9;
+height:100px;
+border-width: 3px; 
+border-style: solid;
+border-color: #F8CF5D;
+font-weight: bold;}
+
+.questionsLiveFeedHeader{color:#F8CF5D;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+.rawDataFeed{background-color: #A9A9A9;
+height:200px;
+border-width: 3px; 
+border-style: solid;
+border-color: #9AA81A;
+font-weight: bold;}
+
+.rawDataFeedHeader{color:#9AA81A;
+font-size: 30px; 
+text-shadow: #000000 0px 0px 2px;}
+
+
+
+.entry{width:225px;
+	height:60px;
+	float:left;
+	margin-left: 0px;
+	margin-right: 0px;
+	border-color: #000000;
+	clear:both;
+	font-size:14px;
+  	white-space: normal;}
+
+
+.buttonRow{text-align:center;
+margin:0px; 
+margin-top:50px;
+display: inline-block;}
+  
+.questionRow{margin-top:50px;
+margin-left:auto;
+margin-right:auto;
+margin-top:0px;
+background-color: #696969;}
+
+.submitQuestionButton{
+background-color-color:#808080;
+height:100px;
+width:125px;
+margin: 0px;
+margin-top:50px;
+border-color:#F8CF5D;
+border-style:solid;
+border-width: 5px;
+text-align: center;}
+
+.textEntry:focus{border-color:#44910A;}
+
+.textEntry{
+background-color: #696969;
+margin:0px;
+margin-top:50px;
+margin-bottom: 100px;
+height:100px;
+border-color:#F8CF5D;
+border-style:solid;
+border-width: 5px;
+text-align: center;}
+
+
+.btn1{background-color:#BD280E; clear:left;}
+.btn2{background-color:#B94E12; clear:right;}
+.btn3{background-color:#F8CF5D; clear:right;}
+.btn4{background-color:#9AA81A; clear:right;}
+.btn5{background-color:#44910A; clear:right;}
+
+
+/*
+ 	gainsboro	#DCDCDC	rgb(220,220,220)
+ 	lightgray / lightgrey	#D3D3D3	rgb(211,211,211)
+ 	silver	#C0C0C0	rgb(192,192,192)
+ 	darkgray / darkgrey	#A9A9A9	rgb(169,169,169)
+ 	gray / grey	#808080	rgb(128,128,128)
+ 	/*dimgray / dimgrey	#696969	rgb(105,105,105)*/
