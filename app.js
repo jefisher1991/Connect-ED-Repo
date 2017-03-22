@@ -29,11 +29,11 @@ $(document).ready(function(){
 
 	$(document).on("click", ".entry", function(event){
 		event.preventDefault();
-    //$(".rawDataFeed").html("");
+        //$(".rawDataFeed").html("");
 
 		var rating = $(this).attr("value");
 		var dateStamp = new Date().toLocaleDateString();
-    var utcTime = new Date().getTime();
+        var utcTime = new Date().getTime();
 
 	 //Pushing rating data to the database
 		reference.ref().push({
@@ -50,7 +50,7 @@ $(document).ready(function(){
 
 	    var question = $(".textEntry").val();
 	    var dateStamp = new Date().toLocaleDateString();
-      var utcTime = new Date().getTime();
+        var utcTime = new Date().getTime();
 
 	    reference.ref().push({
 	        question: question,
@@ -93,7 +93,7 @@ reference.ref().on("value", function(snapshot) {
 
      // Handle the errors
     }, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
+        alert("Errors handled: " + errorObject.code);
     });
 
 // listener for live data points
@@ -104,18 +104,20 @@ reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(s
 		var date = snapshot.val().date;
 		var utcTime = snapshot.val().utc;
 		var convertedTime= moment(utcTime).format('LT');
+
 		$(".rawDataFeed").prepend("<br> Comprehension: " + score + " || Time: " + convertedTime);
-    console.log("comprehension: " + score + " time: " + convertedTime + "date" + date);
+        console.log("comprehension: " + score + " time: " + convertedTime + "date" + date);
 	}
 });
 
 reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(snapshot) {
 		var utcTime = snapshot.val().utc;
 		var convertedTime= moment(utcTime).format('LT');
-	if (snapshot.hasChild("question")) {
-		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
-    console.log(snapshot.val().question);
-	}
+
+    	if (snapshot.hasChild("question")) {
+    		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
+            console.log(snapshot.val().question);
+    	};
 });
 
 //Initial Variables for Stats
@@ -125,11 +127,15 @@ reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(sn
     var mode;
     var min;
     var max;
+    var minIndex;
 
 //Timer for Refreshing Stats Bar
 function runStats(){
+    data = [];
+
     if (arrayRatings.length > 9){
-        var minIndex = arrayRatings.length - 9;
+        minIndex = arrayRatings.length - 10;
+        console.log(minIndex);
         
         for (var i = minIndex; i < arrayRatings.length; i++){
             data.push(arrayRatings[i]);
@@ -159,15 +165,20 @@ function runStats(){
             function getMean(){
 
                 var denominator = data.length;
+                console.log(data.length);
+                console.log(data);
+                console.log(minIndex);
+
                 var numerator = 0;
                 console.log(denominator);
 
                 for (var i = 0; i < data.length; i++){
                     numerator += data[i];
                     console.log(numerator);
-                    console.log("data i"+ data[i]);
+                    
+                    
                 };
-
+                console.log(numerator);
                 mean = (numerator/denominator).toFixed(2);
                 console.log(mean);
 
