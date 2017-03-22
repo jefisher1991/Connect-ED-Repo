@@ -5,10 +5,11 @@ This app was built by a small group of students at the NU Coding Boot Camp in ro
 
 We employed a variety of technologies including Firebase, Google Charts, Bootstrap, HTML5, and CSS3. 
 
-The following are some of the primary functionalities of our project:
+Due to the time constraints on the project, we focused on a couple of major concerns. They included the following:
 
-	— Ability to update teacher on “comprehension” of
-	lecture material using rating (1 - 5)
-	— Data visualization to display real-time results from
-	students, using a line graph
-	- Professional-caliber user interface, guided by Twitter 	Bootstrap framework, and talented web developers	
+1) Ability for student to provide “comprehension” rating (1 - 5) during the course of the lecture
+
+2) Displaying a data visualization of these results in real-time
+
+3) A professional grade user-interface guided by Twitter Bootstrap and 
+the hard work of some talented web developers	
