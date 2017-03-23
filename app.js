@@ -167,7 +167,7 @@ function runStats(){
         setInterval(function(){
             getNumbers();
             renderHtml();
-        }, 1000*3);
+        }, 1000*60);
         
 
     } else {
