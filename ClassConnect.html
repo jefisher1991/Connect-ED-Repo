@@ -17,47 +17,52 @@
     <link href="https://fonts.googleapis.com/css?family=Finger+Paint" rel="stylesheet">
     <!-- Native CSS -->
     <link rel="stylesheet" href="ClassConnect.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+    <!-- Moment.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.0/moment.min.js"></script>
+    <!-- Google Charts Library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <title>Connect-Ed Instructor</title>
+   <title>Connect-Ed Instructor</title>
+
 </head>
 
 <body>
-    <!-- Jumbotron -->
-    <div class="masterContainer">
-        <div class="jumbotron"> ConnectED
-        </div>
-        <div class="dataContainer">
-            <!-- Large Row  -->
-            <div class="row">
-                <!-- display of graph -->
-                <div class="col-md-8 lineGraph"> This is where the line graph will display, this is an average of the submissions from students
-                </div>
-                <div class="col-md-4">
-                <h class=rawDataFeedHeader>Student Responses</h>
-                    <div class="row rawDataFeed">
-                        
-                    </div>
-                    <h class= "questionsLiveFeedHeader">Student Questions</h>
-                    <div class="row questionsLiveFeed">
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="row statsBar">
-                <!-- Stats Bar -->
-                <br>
-                <h class=classStatsHeader>Class Stats</h>
-                <br>
-                <p class="statsBox mean col-sm-2"> MEAN </p>
-                <p class="statsBox median col-sm-2"> MEDIAN </p>
-                <p class="statsBox min col-sm-2"> MIN </p>
-                <p class="statsBox max col-sm-2"> MAX </p>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
+   <!-- Master container -->
+   <div class="container masterContainer">
+       <!-- Jumbotron -->
+       <div class="jumbotron"> ConnectED</div>
+       <!-- Container holding data -->
+       <div class="row data">
+           <!-- reset button -->
+           <button type="button" class="btn btn-primary btn-lg btn-block reset">Reset</button>
+           <!-- Graph Div -->
+           <div class="col-md-8 lineGraph" id = "curve_chart" style = "width: 750px; height: 300px"> This is where the line graph will display, this is an average of the submissions from students
+           </div>
+           <!-- Raw Data Div -->
+           <div class="col-md-4 rawDataFeedFormat">
+               <h class=rawDataFeedHeader>Student Responses</h>
+               <div class="row rawDataFeed"></div>
+           </div>
+           <!-- Questions Div -->
+           <div class="questionsLiveFormat">
+               <h class="questionsLiveFeedHeader">Student Questions</h>
+               <div class="row questionsLiveFeed"></div>
+           </div>
+       
+       <!-- Stats Bar Div -->
+       <div class="row statsBar">
+           <!-- Stats Bar -->
+           <br>
+           <h class=classStatsHeader>Class Stats</h>
+           <br>
+           <div class="stats">
+               <div class="statsBox mean col-xs-3"> MEAN </div>
+               <div class="statsBox median col-xs-3"> MEDIAN </div>
+               <div class="statsBox min col-xs-3"> MIN </div>
+               <div class="statsBox max col-xs-3"> MAX </div>
+           </div>
+       </div>
+   </div>
 </body>
 
 </html>

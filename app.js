@@ -12,6 +12,15 @@ $(document).ready(function(){
   firebase.initializeApp(config);
   var reference = firebase.database();
 
+  //Initialize GoogleCharts
+
+  google.charts.load('current', {'packages':['corechart']});
+     google.charts.setOnLoadCallback(drawChart);
+     var data;
+     var dataList = [
+           ['Time', 'Ratings']   
+    ];
+
 //Variables
 
  var today = new Date().toLocaleDateString();
@@ -83,6 +92,10 @@ reference.ref().on("child_added", function(data) {
     		arrayTimeStamp.push(retrieveTimestamp);
     	};
     };
+
+        //Display All Points in Chart
+
+        drawChart();
 
 		//Stats Functions
 
@@ -248,5 +261,23 @@ function reset(){
     $(".rawDataFeed").empty();
     $(".questionsLiveFeed").empty();
 };
+
+
+
+ function drawChart() {
+   var options = {
+     title: 'Connect-ED App Results',
+     curveType: 'function',
+     legend: { position: 'bottom' }
+   };
+
+   data = google.visualization.arrayToDataTable(dataList);
+   var chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
+   chart.draw(data, options);
+
+   for (var i = 0; i < arrayRatings.length; i++){
+        dataList.push([arrayTimeStamp[i], arrayRatings[i]]);
+    };
+}; 
 
 });
