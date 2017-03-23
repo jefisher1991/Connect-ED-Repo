@@ -144,7 +144,7 @@ $(document).on("click", ".reset-button", function(){
 });
 
 //Initial Variables for Stats
-    var data = [];
+    var segment = [];
     var mean;
     var median;
     var mode;
@@ -154,20 +154,20 @@ $(document).on("click", ".reset-button", function(){
 
 //Timer for Refreshing Stats Bar
 function runStats(){
-    data = [];
+    segment = [];
 
     if (arrayRatings.length > 9){
         minIndex = arrayRatings.length - 10;
         console.log(minIndex);
         
         for (var i = minIndex; i < arrayRatings.length; i++){
-            data.push(arrayRatings[i]);
+            segment.push(arrayRatings[i]);
         };
 
         setInterval(function(){
             getNumbers();
             renderHtml();
-        }, 1000*60);
+        }, 1000*3);
         
 
     } else {
@@ -187,16 +187,16 @@ function runStats(){
 
             function getMean(){
 
-                var denominator = data.length;
-                console.log(data.length);
-                console.log(data);
+                var denominator = segment.length;
+                console.log(segment.length);
+                console.log(segment);
                 console.log(minIndex);
 
                 var numerator = 0;
                 console.log(denominator);
 
-                for (var i = 0; i < data.length; i++){
-                    numerator += data[i];
+                for (var i = 0; i < segment.length; i++){
+                    numerator += segment[i];
                     console.log(numerator);
                     
                     
@@ -208,12 +208,12 @@ function runStats(){
             };
 
             function getMinMaxMedian(){
-                data.sort(function(a,b){
+                segment.sort(function(a,b){
                     return a - b
                 });
 
-                min = data[0];
-                max = data[(data.length - 1)];
+                min = segment[0];
+                max = segment[(segment.length - 1)];
 
                 getMedian();
 
@@ -221,19 +221,19 @@ function runStats(){
                     //Is the length of the array even or odd? Determines how median is calculated!
                     var even = false;
 
-                    if(Number.isInteger(data.length / 2)){
+                    if(Number.isInteger(segment.length / 2)){
                         even = true;
                     };
             
                     if (even === true){
-                        var half = (data.length / 2);
+                        var half = (segment.length / 2);
                         var halfMinus = (half - 1);
-                        var targets = data[half] + data[halfMinus];
+                        var targets = segment[half] + segment[halfMinus];
                         median = targets / 2;
 
                     } else {
-                        var half = data.length / 2;
-                        median = data[Math.ceil(half)];
+                        var half = segment.length / 2;
+                        median = segment[Math.ceil(half)];
                     };
                 };
             };
