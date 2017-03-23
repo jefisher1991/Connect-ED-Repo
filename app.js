@@ -14,71 +14,75 @@ $(document).ready(function(){
 
 //Variables
 
-	//XY Coordinates for Ratings and Corresponding Timestamps
-	 var arrayRatings = [];
-	 var arrayTimeStamp = [];
+ var today = new Date().toLocaleDateString();
+//XY Coordinates for Ratings and Corresponding Timestamps
+ var arrayRatings = [];
+ var arrayTimeStamp = [];
 
-	 //XY Coordinates for Ratings and Corresponding Timestamps
-	 var arrayQuestions = [];
-	 var arrayQuesTimeStamp = [];
+ //XY Coordinates for Ratings and Corresponding Timestamps
+ var arrayQuestions = [];
+ var arrayQuesTimeStamp = [];
 
 
-//Event listeners
+//EVENT LISTENERS
 
-	//Listening for ratings of understanding
+//Listening for ratings of understanding
 
-	$(document).on("click", ".entry", function(event){
-		event.preventDefault();
-        //$(".rawDataFeed").html("");
+$(document).on("click", ".entry", function(event){
+	event.preventDefault();
+    //$(".rawDataFeed").html("");
 
-		var rating = $(this).attr("value");
-		var dateStamp = new Date().toLocaleDateString();
-        var utcTime = new Date().getTime();
+	var rating = $(this).attr("value");
+	var dateStamp = new Date().toLocaleDateString();
+    var utcTime = new Date().getTime();
 
-	 //Pushing rating data to the database
-		reference.ref().push({
-			comprehension: rating,
-			date: dateStamp,
-      		utc: utcTime
-		});
+ //Pushing rating data to the database
+	reference.ref().push({
+		comprehension: rating,
+		date: dateStamp,
+  		utc: utcTime
 	});
+});
 
-	//Listening for Questions
+//Listening for Questions
 
-	$(document).on("click", ".submitQuestionButton", function(){
-	    event.preventDefault();
+$(document).on("click", ".submitQuestionButton", function(){
+    event.preventDefault();
 
-	    var question = $(".textEntry").val();
-	    var dateStamp = new Date().toLocaleDateString();
-        var utcTime = new Date().getTime();
+    var question = $(".textEntry").val();
+    var dateStamp = new Date().toLocaleDateString();
+    var utcTime = new Date().getTime();
 
-	    reference.ref().push({
-	        question: question,
-	        date: dateStamp,
-          	utc: utcTime
-	    });
-	});
+    reference.ref().push({
+        question: question,
+        date: dateStamp,
+      	utc: utcTime
+    });
+});
 
 //Retrieving ratings and/or questions with corresponding timestamps from Firebase
-reference.ref().on("value", function(snapshot) {
+reference.ref().on("child_added", function(data) {
+ 	
+        var retrieveRating = data.val().comprehension;
+    	var retrieveTimestamp = data.val().utc;
+    	var retrieveQuestion = data.val().question;
+        var pointDate = data.val().date;
+        console.log(pointDate);
+        console.log(today);
 
-	snapshot.forEach(function(data) {
-		var retrieveRating = data.val().comprehension;
-		var retrieveTimestamp = data.val().time;
-		var retrieveQuestion = data.val().question;
-
-	    	if (data.val().comprehension === undefined){
-	    		if (data.val().question === undefined){
-	    			return;
-	    		} else {
-	    			arrayQuestions.push(retrieveQuestion);
-	    			arrayQuesTimeStamp.push(retrieveTimestamp);
-	    		};
-	    	} else {
-	    		arrayRatings.push(parseInt(retrieveRating));
-	    		arrayTimeStamp.push(retrieveTimestamp);
-	    	};
-  		});
+    if (pointDate === today){
+    	if (data.val().comprehension === undefined){
+    		if (data.val().question === undefined){
+    			return;
+    		} else {
+    			arrayQuestions.push(retrieveQuestion);
+    			arrayQuesTimeStamp.push(retrieveTimestamp);
+    		};
+    	} else {
+    		arrayRatings.push(parseInt(retrieveRating));
+    		arrayTimeStamp.push(retrieveTimestamp);
+    	};
+    };
 
 		//Stats Functions
 
@@ -99,7 +103,7 @@ reference.ref().on("value", function(snapshot) {
 // listener for live data points
 
 reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(snapshot) {
-	if (snapshot.hasChild("comprehension") && snapshot.hasChild("date")) {
+	if (snapshot.val().date === today && snapshot.hasChild("comprehension") && snapshot.hasChild("date")) {
 		var score = snapshot.val().comprehension;
 		var date = snapshot.val().date;
 		var utcTime = snapshot.val().utc;
@@ -114,10 +118,16 @@ reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(sn
 		var utcTime = snapshot.val().utc;
 		var convertedTime= moment(utcTime).format('LT');
 
-    	if (snapshot.hasChild("question")) {
+    	if (snapshot.val().date === today && snapshot.hasChild("question")) {
     		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
             console.log(snapshot.val().question);
     	};
+});
+
+//Reset Button Listener
+
+$(document).on("click", ".reset-button", function(){
+    reset();
 });
 
 //Initial Variables for Stats
@@ -226,4 +236,17 @@ function runStats(){
             $(".max").html("MAX: " + max);
         };
 
-    });
+function reset(){
+
+    //Clear Stats Bar
+    $(".median").html("MEDIAN: ");
+    $(".mean").html("MEAN: ");
+    $(".min").html("MIN: ");
+    $(".max").html("MAX: ");
+
+    //Clear Student Responses and Questions
+    $(".rawDataFeed").empty();
+    $(".questionsLiveFeed").empty();
+};
+
+});
