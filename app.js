@@ -15,23 +15,30 @@ $(document).ready(function(){
   //Initialize GoogleCharts
 
   google.charts.load('current', {'packages':['corechart']});
-     google.charts.setOnLoadCallback(drawChart);
-     var data;
-     var dataList = [
-           ['Time', 'Ratings']   
-    ];
+  google.charts.setOnLoadCallback(drawChart);
 
-//Variables
+//VARIABLES
 
- var today = new Date().toLocaleDateString();
+var today = new Date().toLocaleDateString();
+var ratingTimer;
+var questionTimer;
+
 //XY Coordinates for Ratings and Corresponding Timestamps
- var arrayRatings = [];
- var arrayTimeStamp = [];
+var arrayRatings = [];
+var arrayTimeStamp = [];
 
- //XY Coordinates for Ratings and Corresponding Timestamps
- var arrayQuestions = [];
- var arrayQuesTimeStamp = [];
+//XY Coordinates for Ratings and Corresponding Timestamps
+var arrayQuestions = [];
+var arrayQuesTimeStamp = [];
 
+//Initial Variables for Stats
+var segment = [];
+var mean;
+var median;
+var mode;
+var min;
+var max;
+var minIndex;
 
 //EVENT LISTENERS
 
@@ -39,46 +46,64 @@ $(document).ready(function(){
 
 $(document).on("click", ".entry", function(event){
 	event.preventDefault();
-    //$(".rawDataFeed").html("");
+    
+    // Disable Button for 60 seconds - prevent spamming!
+    $(".entry").prop("disabled", true);
+    enableEntryTimer();
 
+    //Store the rating and timestamp of submission
 	var rating = $(this).attr("value");
 	var dateStamp = new Date().toLocaleDateString();
     var utcTime = new Date().getTime();
 
- //Pushing rating data to the database
-	reference.ref().push({
-		comprehension: rating,
-		date: dateStamp,
-  		utc: utcTime
-	});
+    //Push rating data to Firebase
+    	reference.ref().push({
+    		comprehension: rating,
+    		date: dateStamp,
+      		utc: utcTime
+    	});
 });
 
 //Listening for Questions
 
-$(document).on("click", ".submitQuestionButton", function(){
+$(document).on("click", ".submitQuestionButton", function(event){
     event.preventDefault();
 
-    var question = $(".textEntry").val();
-    var dateStamp = new Date().toLocaleDateString();
-    var utcTime = new Date().getTime();
+    //Check for valid user input
+    var question = $(".textEntry").val().trim();
+        if(question === ""){
+            return;
+        };
 
-    reference.ref().push({
-        question: question,
-        date: dateStamp,
-      	utc: utcTime
-    });
+    //If question is not empty, move forward with:
+
+        //Clear the input field
+        $(".questionText").val("");
+
+        // Disable Button for 60 seconds - prevent spamming!
+        $(".submitQuestionButton").prop("disabled", true);
+        enableQuestionTimer();
+
+        //Grab the timestamp of valid submission
+        var dateStamp = new Date().toLocaleDateString();
+        var utcTime = new Date().getTime();
+
+        //Submit to Firebase
+        reference.ref().push({
+            question: question,
+            date: dateStamp,
+          	utc: utcTime
+        });
 });
 
 //Retrieving ratings and/or questions with corresponding timestamps from Firebase
 reference.ref().on("child_added", function(data) {
- 	
-        var retrieveRating = data.val().comprehension;
-    	var retrieveTimestamp = data.val().utc;
-    	var retrieveQuestion = data.val().question;
-        var pointDate = data.val().date;
-        console.log(pointDate);
-        console.log(today);
+    var retrieveRating = data.val().comprehension;
+	var retrieveTimestamp = data.val().utc;
+	var retrieveQuestion = data.val().question;
+    var pointDate = data.val().date;
 
+    //Only push values in array from TODAY
     if (pointDate === today){
     	if (data.val().comprehension === undefined){
     		if (data.val().question === undefined){
@@ -93,28 +118,18 @@ reference.ref().on("child_added", function(data) {
     	};
     };
 
-        //Display All Points in Chart
+	//Call Stats Functions
+	runStats();
 
-        drawChart();
+    //Display Scatterplot
+    drawChart();
 
-		//Stats Functions
-
-		runStats();
-		
-		//Checking for full array
-	    	console.log(arrayRatings);
-    		console.log(arrayTimeStamp);
-
-    		console.log(arrayQuestions);
-    		console.log(arrayQuesTimeStamp);
-
-     // Handle the errors
+    // Handle the errors
     }, function(errorObject) {
         alert("Errors handled: " + errorObject.code);
     });
 
-// listener for live data points
-
+// Listener for Live Data Points
 reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(snapshot) {
 	if (snapshot.val().date === today && snapshot.hasChild("comprehension") && snapshot.hasChild("date")) {
 		var score = snapshot.val().comprehension;
@@ -123,47 +138,38 @@ reference.ref().orderByChild("utc").limitToLast(10).on("child_added", function(s
 		var convertedTime= moment(utcTime).format('LT');
 
 		$(".rawDataFeed").prepend("<br> Comprehension: " + score + " || Time: " + convertedTime);
-        console.log("comprehension: " + score + " time: " + convertedTime + "date" + date);
-	}
+	};
 });
 
+// Listener for Questions
 reference.ref().orderByChild("utc").limitToLast(1).on("child_added", function(snapshot) {
-		var utcTime = snapshot.val().utc;
-		var convertedTime= moment(utcTime).format('LT');
+	var utcTime = snapshot.val().utc;
+	var convertedTime= moment(utcTime).format('LT');
 
-    	if (snapshot.val().date === today && snapshot.hasChild("question")) {
-    		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
-            console.log(snapshot.val().question);
-    	};
+	if (snapshot.val().date === today && snapshot.hasChild("question")) {
+		$(".questionsLiveFeed").prepend("<br>" + snapshot.val().question + "<br> Time: " + convertedTime+ "<br><br>");
+	};
 });
 
 //Reset Button Listener
-
-$(document).on("click", ".reset-button", function(){
+$(document).on("click", ".reset", function(){
     reset();
 });
 
-//Initial Variables for Stats
-    var segment = [];
-    var mean;
-    var median;
-    var mode;
-    var min;
-    var max;
-    var minIndex;
+//FUNCTIONS
 
-//Timer for Refreshing Stats Bar
+//Displaying Stats of Students' Ratings
 function runStats(){
     segment = [];
 
     if (arrayRatings.length > 9){
         minIndex = arrayRatings.length - 10;
-        console.log(minIndex);
         
         for (var i = minIndex; i < arrayRatings.length; i++){
             segment.push(arrayRatings[i]);
         };
 
+        //Timer for Refreshing Stats Bar
         setInterval(function(){
             getNumbers();
             renderHtml();
@@ -177,80 +183,82 @@ function runStats(){
         $(".max").html("MAX: ");
     };
 };
-    //Stats Output; called when database value changes, or on a timed interval
-        function getNumbers(){
 
-        getMean();
-        getMinMaxMedian();
+//Stats Output Numbers
+function getNumbers(){
 
-            //Functions calculating Mean, median, range
+    getMean();
+    getMinMaxMedian();
 
-            function getMean(){
+    //Functions calculating Mean, median, range
+    function getMean(){
 
-                var denominator = segment.length;
-                console.log(segment.length);
-                console.log(segment);
-                console.log(minIndex);
+        var denominator = segment.length;
+        var numerator = 0;
 
-                var numerator = 0;
-                console.log(denominator);
+        for (var i = 0; i < segment.length; i++){
+            numerator += segment[i];
+        };
+        mean = (numerator/denominator).toFixed(2);
+    };
 
-                for (var i = 0; i < segment.length; i++){
-                    numerator += segment[i];
-                    console.log(numerator);
-                    
-                    
-                };
-                console.log(numerator);
-                mean = (numerator/denominator).toFixed(2);
-                console.log(mean);
+    function getMinMaxMedian(){
+        segment.sort(function(a,b){
+            return a - b
+        });
 
+        min = segment[0];
+        max = segment[(segment.length - 1)];
+
+        getMedian();
+
+        function getMedian(){
+            //Is the length of the array even or odd? Determines how median is calculated!
+            var even = false;
+
+            if (Number.isInteger(segment.length / 2)){
+                even = true;
             };
+    
+            if (even === true){
+                var half = (segment.length / 2);
+                var halfMinus = (half - 1);
+                var targets = segment[half] + segment[halfMinus];
+                median = targets / 2;
 
-            function getMinMaxMedian(){
-                segment.sort(function(a,b){
-                    return a - b
-                });
-
-                min = segment[0];
-                max = segment[(segment.length - 1)];
-
-                getMedian();
-
-                function getMedian(){
-                    //Is the length of the array even or odd? Determines how median is calculated!
-                    var even = false;
-
-                    if(Number.isInteger(segment.length / 2)){
-                        even = true;
-                    };
-            
-                    if (even === true){
-                        var half = (segment.length / 2);
-                        var halfMinus = (half - 1);
-                        var targets = segment[half] + segment[halfMinus];
-                        median = targets / 2;
-
-                    } else {
-                        var half = segment.length / 2;
-                        median = segment[Math.ceil(half)];
-                    };
-                };
+            } else {
+                var half = segment.length / 2;
+                median = segment[Math.ceil(half)];
             };
         };
+    };
+};
 
+//Display new stats numbers to Instructor HTML
+function renderHtml(){
 
+    $(".median").html("MEDIAN: " + median);
+    $(".mean").html("MEAN: "+ mean);
+    $(".min").html("MIN: " + min);
+    $(".max").html("MAX: " + max);
+};
 
-        function renderHtml(){
+//Timer for Re-Enabling Rating Buttons
+function enableEntryTimer (){
+    ratingTimer = setTimeout(function(){
+    $(".entry").prop("disabled", false);
+    }, 1000*60);
+};
 
-            $(".median").html("MEDIAN: " + median);
-            $(".mean").html("MEAN: "+ mean);
-            $(".min").html("MIN: " + min);
-            $(".max").html("MAX: " + max);
-        };
+//Timer for Re-Enabling Question Submission Button
+function enableQuestionTimer (){
+    questionTimer = setTimeout(function(){
+    $(".submitQuestionButton").prop("disabled", false);
+    }, 1000*60);
+};
 
+//Clear portions of Instructor HTML
 function reset(){
-
     //Clear Stats Bar
     $(".median").html("MEDIAN: ");
     $(".mean").html("MEAN: ");
@@ -262,22 +270,52 @@ function reset(){
     $(".questionsLiveFeed").empty();
 };
 
+//Use current ratings data, push to GoogleCharts
+function drawChart() {
+    var dataList = [];
 
+    for (var i = 0; i < arrayRatings.length; i++){
+            dataList.push([arrayTimeStamp[i], arrayRatings[i]]);
+        };
 
- function drawChart() {
-   var options = {
-     title: 'Connect-ED App Results',
-     curveType: 'function',
-     legend: { position: 'bottom' }
-   };
+    var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Time Submitted');
+        data.addColumn('number', 'Ratings');
+        data.addRows(dataList);
 
-   data = google.visualization.arrayToDataTable(dataList);
-   var chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
-   chart.draw(data, options);
+    var options = {
+      title: "Students' Comprehension Over Time",
+      titleTextStyle: { 
+        color: "#B94E12",
+        fontName: "sans serif",
+        fontSize: 26,
+        bold: true,
+        italic: false 
+    },
+      backgroundColor: "#A9A9A9",
+      colors: ["#44910A"],
+      hAxis: {
+        title: 'Time',
+        format: 'short',
+        gridlines: {
+            color: '#BD280E', 
+            count: 5
+    },
 
-   for (var i = 0; i < arrayRatings.length; i++){
-        dataList.push([arrayTimeStamp[i], arrayRatings[i]]);
+    },
+      vAxis: {
+        title: 'Ratings',
+        gridlines: {
+            color: '#BD280E'
+    }, 
+        minValue: 0, 
+        maxValue: 5
+    },
+      legend: 'none'
     };
-}; 
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
+    chart.draw(data, options);
+};
 
 });
