@@ -124,6 +124,7 @@ reference.ref().on("child_added", function(data) {
     //Display Scatterplot
     drawChart();
 
+
     // Handle the errors
     }, function(errorObject) {
         alert("Errors handled: " + errorObject.code);
@@ -272,50 +273,53 @@ function reset(){
 
 //Use current ratings data, push to GoogleCharts
 function drawChart() {
-    var dataList = [];
+    if($('#curve_chart').length){ 
+        var dataList = [];
 
-    for (var i = 0; i < arrayRatings.length; i++){
-            dataList.push([arrayTimeStamp[i], arrayRatings[i]]);
+        for (var i = 0; i < arrayRatings.length; i++){
+                dataList.push([arrayTimeStamp[i], arrayRatings[i]]);
+            };
+
+        var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Time Submitted');
+            data.addColumn('number', 'Ratings');
+            data.addRows(dataList);
+
+        var options = {
+          title: "Students' Comprehension Over Time",
+          titleTextStyle: { 
+            color: "#B94E12",
+            fontName: "sans serif",
+            fontSize: 26,
+            bold: true,
+            italic: false 
+        },
+          backgroundColor: "#A9A9A9",
+          colors: ["#44910A"],
+          hAxis: {
+            title: 'Time',
+            format: 'short',
+            gridlines: {
+                color: '#BD280E', 
+                count: 5
+        },
+
+        },
+          vAxis: {
+            title: 'Ratings',
+            gridlines: {
+                color: '#BD280E'
+        }, 
+            minValue: 0, 
+            maxValue: 5
+        },
+          legend: 'none'
         };
 
-    var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Time Submitted');
-        data.addColumn('number', 'Ratings');
-        data.addRows(dataList);
-
-    var options = {
-      title: "Students' Comprehension Over Time",
-      titleTextStyle: { 
-        color: "#B94E12",
-        fontName: "sans serif",
-        fontSize: 26,
-        bold: true,
-        italic: false 
-    },
-      backgroundColor: "#A9A9A9",
-      colors: ["#44910A"],
-      hAxis: {
-        title: 'Time',
-        format: 'short',
-        gridlines: {
-            color: '#BD280E', 
-            count: 5
-    },
-
-    },
-      vAxis: {
-        title: 'Ratings',
-        gridlines: {
-            color: '#BD280E'
-    }, 
-        minValue: 0, 
-        maxValue: 5
-    },
-      legend: 'none'
+        var chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
+        chart.draw(data, options);
     };
 
-    var chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
-    chart.draw(data, options);
 };
 
 });
